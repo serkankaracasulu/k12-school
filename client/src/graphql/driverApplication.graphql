@@ -1,0 +1,40 @@
+fragment driverApplication on DriverApplication {
+  _id
+  email
+  userFullName
+  status
+  createdAt
+  institutionName
+  userId
+}
+
+query DriverJobRequests {
+  driverJobRequests {
+    ...driverApplication
+  }
+}
+mutation AcceptDriverInvitation(
+  $invitationId: ObjectId!
+  $r: Boolean
+  $d: Boolean
+) {
+  acceptDriverInvitation(invitationId: $invitationId, r: $r, d: $d) {
+    ...driverApplication
+  }
+}
+mutation AddDriver($applicationId: ObjectId!) {
+  addDriver(applicationId: $applicationId) {
+    ...user
+  }
+}
+mutation InvitationDrivers($emails: [String!]!) {
+  invitationDrivers(input: { emails: $emails }) {
+    ...driverApplication
+  }
+}
+
+query DriverApplications {
+  driverApplications {
+    ...driverApplication
+  }
+}

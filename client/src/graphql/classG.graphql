@@ -1,0 +1,45 @@
+fragment classG on ClassG {
+  _id
+  level
+  lessons {
+    ...classLesson
+  }
+}
+query SchoolKindClass($schoolGId: ObjectId!, $level: Int!) {
+  schoolKindClass(schoolGId: $schoolGId, level: $level) {
+    ...classG
+  }
+}
+query ClassG($schoolId: ObjectId!, $classId: ObjectId!) {
+  classG(schoolId: $schoolId, classId: $classId) {
+    ...classG
+  }
+}
+mutation AddLessonToClass(
+  $schoolId: ObjectId!
+  $classId: ObjectId!
+  $lessonId: ObjectId!
+  $count: Int!
+  $required: Boolean
+) {
+  addLessonToClass(
+    data: {
+      schoolId: $schoolId
+      classId: $classId
+      lessonId: $lessonId
+      count: $count
+      required: $required
+    }
+  ) {
+    ...classG
+  }
+}
+mutation RemoveLessonToClass(
+  $schoolId: ObjectId!
+  $classId: ObjectId!
+  $_id: ObjectId!
+) {
+  removeLessonToClass(schoolId: $schoolId, classId: $classId, _id: $_id) {
+    ...classG
+  }
+}

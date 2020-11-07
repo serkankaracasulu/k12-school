@@ -1,0 +1,22 @@
+fragment teacherField on TeacherField {
+  _id
+  name
+  departments {
+    ...deapartment
+  }
+}
+query TeacherFields {
+  teacherFields {
+    ...teacherField
+  }
+}
+mutation RemoveTeacherField($_id: ObjectId!) {
+  removeTeacherField(_id: $_id) {
+    ...removeResult
+  }
+}
+mutation EditTeacherField($name: String!) {
+  editTeacherField(data: { name: $name }) {
+    ...teacherField
+  }
+}

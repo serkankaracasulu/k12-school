@@ -1,0 +1,66 @@
+fragment voyage on Voyage {
+  _id
+  institutionId
+  institutionName
+  driverId
+  title
+  studentIds
+  schoolId
+  school {
+    _id
+    name
+    address {
+      coordinates
+    }
+  }
+  voyageTimes {
+    ...voyageTime
+  }
+}
+query Voyage($voyageId: ObjectId!) {
+  voyage(voyageId: $voyageId) {
+    ...voyage
+  }
+}
+query Voyages {
+  voyages {
+    ...voyage
+  }
+}
+query StudentVoyages($parentStudentId: ObjectId!) {
+  studentVoyages(parentStudentId: $parentStudentId) {
+    ...voyage
+  }
+}
+mutation CreateVoyage(
+  $title: String!
+  $times: [VoyageTimeInput!]!
+  $institutionId: ObjectId!
+  $schoolId: ObjectId!
+) {
+  createVoyage(
+    data: {
+      title: $title
+      times: $times
+      institutionId: $institutionId
+      schoolId: $schoolId
+    }
+  ) {
+    ...voyage
+  }
+}
+mutation RemoveStudentVoyage($studentId: ObjectId!, $voyageId: ObjectId!) {
+  removeStudentVoyage(studentId: $studentId, voyageId: $voyageId) {
+    success
+  }
+}
+mutation SetVoyageOrderLast($voyageId: ObjectId!, $studentId: ObjectId!) {
+  setVoyageOrderLast(studentId: $studentId, voyageId: $voyageId) {
+    success
+  }
+}
+mutation AddStudentVoyage($voyageId: ObjectId!, $studentId: ObjectId!) {
+  addStudentVoyage(studentId: $studentId, voyageId: $voyageId) {
+    success
+  }
+}

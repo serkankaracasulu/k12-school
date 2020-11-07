@@ -1,0 +1,229 @@
+fragment personNamePart on Person {
+  _id
+  firstName
+  lastName
+  fullName
+}
+fragment person on Person {
+  ...personNamePart
+  email
+  unVerifiedEmail
+  createdAt
+  fullName
+  kind
+  profilePhoto
+  roles
+  phone
+  birthDate
+  address {
+    ...address
+  }
+}
+fragment userNamePart on User {
+  _id
+  firstName
+  lastName
+  fullName
+  email
+}
+fragment user on User {
+  _id
+  ...userNamePart
+  phone
+  citizenshipId
+  createdAt
+  birthDate
+  kind
+  driver {
+    ...driver
+  }
+  parentStudents {
+    ...parentStudent
+  }
+  teacher {
+    ...teacher
+  }
+  address {
+    ...address
+  }
+}
+query Person($personId: ObjectId!) {
+  person(personId: $personId) {
+    ...person
+  }
+}
+query ActiveUser {
+  activeUser {
+    ...person
+  }
+}
+
+mutation SiginUser($password: String!, $email: String!) {
+  signIn(data: { password: $password, email: $email }) {
+    token
+  }
+}
+
+query User($userId: ObjectId!) {
+  user(userId: $userId) {
+    ...user
+  }
+}
+query FindUser($search: String!) {
+  findUser(search: $search) {
+    ...user
+  }
+}
+query Teachers {
+  teachers {
+    _id
+    firstName
+    lastName
+    fullName
+    educations {
+      departmentId
+      department {
+        _id
+        name
+      }
+    }
+  }
+}
+mutation AddTeacher($applicationId: ObjectId!) {
+  addTeacher(applicationId: $applicationId) {
+    ...user
+  }
+}
+mutation EditUser(
+  $firstName: String!
+  $lastName: String!
+  $phone: String
+  $address: AddressInput
+  $birthDate: DateTime
+) {
+  editUser(
+    data: {
+      firstName: $firstName
+      lastName: $lastName
+      phone: $phone
+      birthDate: $birthDate
+      addressData: $address
+    }
+  ) {
+    ...user
+  }
+}
+mutation AddParent($applicationId: ObjectId!) {
+  addParent(applicationId: $applicationId) {
+    ...user
+  }
+}
+mutation UserChangePhoto($profilePhotoBase64: String!) {
+  changeUserPhoto(profilePhotoBase64: $profilePhotoBase64) {
+    success
+  }
+}
+
+mutation ResetPassword($token: String!, $_id: ObjectId!, $password: String) {
+  resetPassword(data: { token: $token, _id: $_id, password: $password }) {
+    success
+  }
+}
+
+mutation ReSendConfirmEmail($email: String!, $password: String!) {
+  reSendConfirmEmail(data: { email: $email, password: $password }) {
+    success
+  }
+}
+
+mutation ForgotPassword($email: String!) {
+  forgotPassword(email: $email) {
+    success
+  }
+}
+mutation ChangePassword($password: String!, $rePassword: String!) {
+  changePassword(data: { password: $password, rePassword: $rePassword }) {
+    success
+  }
+}
+mutation ConfirmEmail($token: String!, $email: String!) {
+  confirmEmail(data: { token: $token, email: $email }) {
+    success
+  }
+}
+mutation CreateUser(
+  $firstName: String!
+  $lastName: String!
+  $password: String!
+  $email: String!
+  $token: String
+) {
+  createUser(
+    inputData: {
+      firstName: $firstName
+      lastName: $lastName
+      password: $password
+      email: $email
+      token: $token
+    }
+  ) {
+    _id
+    firstName
+    lastName
+    email
+    createdAt
+  }
+}
+mutation CreateInstUser(
+  $firstName: String!
+  $lastName: String!
+  $password: String!
+  $email: String!
+  $token: String
+  $institutionName: String!
+  $phone: String!
+) {
+  createInst(
+    inputData: {
+      firstName: $firstName
+      lastName: $lastName
+      password: $password
+      email: $email
+      token: $token
+      institutionName: $institutionName
+      phone: $phone
+    }
+  ) {
+    _id
+    firstName
+    lastName
+    email
+    createdAt
+  }
+}
+mutation ConfirmParentEmail($token: String!, $unVerifiedEmail: String!) {
+  parentConfirmEmail(
+    data: { token: $token, unVerifiedEmail: $unVerifiedEmail }
+  ) {
+    token
+    _id
+  }
+}
+
+#region Parent
+mutation ParentForgotPassword($email: String!) {
+  parentForgotPassword(email: $email) {
+    success
+  }
+}
+mutation ParentResendConfimEmail(
+  $unVerifiedEmail: String!
+  $citizenshipId: String!
+) {
+  parentResendConfirmEmail(
+    data: { unVerifiedEmail: $unVerifiedEmail, citizenshipId: $citizenshipId }
+  ) {
+    success
+  }
+}
+#endRegion

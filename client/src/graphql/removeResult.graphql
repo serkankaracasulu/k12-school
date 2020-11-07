@@ -1,0 +1,5 @@
+fragment removeResult on RemoveResult {
+  code
+  success
+  _id
+}

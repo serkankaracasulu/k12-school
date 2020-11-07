@@ -1,0 +1,27 @@
+fragment inbox on Inbox {
+  _id
+  lastMessage
+  users {
+    _id
+    firstName
+    lastName
+    fullName
+    kind
+  }
+  createdAt
+  updatedAt
+  unReadCount
+}
+query Inboxs($skip: Int!) {
+  inboxs(skip: $skip) {
+    ...inbox
+  }
+}
+query Inbox($inboxId: ObjectId, $to: [ObjectId!]) {
+  inbox(inboxId: $inboxId, to: $to) {
+    ...inbox
+  }
+}
+query UnReadMessageCount {
+  unReadMessageCount
+}

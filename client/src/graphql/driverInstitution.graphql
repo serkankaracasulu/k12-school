@@ -1,0 +1,5 @@
+fragment driverInstitution on DriverInstitution {
+  _id
+  institutionId
+  institutionName
+}

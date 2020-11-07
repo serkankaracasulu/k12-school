@@ -1,0 +1,29 @@
+fragment deapartment on Department {
+  _id
+  name
+}
+query Departments {
+  departments {
+    ...deapartment
+  }
+}
+mutation RemoveDepartment($_id: ObjectId!) {
+  removeDepartment(_id: $_id) {
+    ...removeResult
+  }
+}
+mutation EditDepartment($name: String!) {
+  editDepartment(department: { name: $name }) {
+    ...deapartment
+  }
+}
+mutation AddDepartmentsToTeacherField($ids: [ObjectId!]!, $_id: ObjectId!) {
+  addDepartmentsToTeacherField(ids: $ids, _id: $_id) {
+    ...teacherField
+  }
+}
+mutation RemoveDepartmentsToTeacherField($id: ObjectId!, $_id: ObjectId!) {
+  removeDepartmentsToTeacherField(id: $id, _id: $_id) {
+    ...teacherField
+  }
+}

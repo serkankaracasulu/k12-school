@@ -1,0 +1,21 @@
+fragment parentStudent on ParentStudent {
+  _id
+  studentId
+  institutionId
+  parentType
+}
+query MyChildren {
+  myChildren {
+    ...person
+  }
+}
+query Parents($studentId: ObjectId!) {
+  studentParents(studentId: $studentId) {
+    ...user
+  }
+}
+mutation RemoveParent($studentId: ObjectId!, $parentId: ObjectId!) {
+  removeParent(studentId: $studentId, parentId: $parentId) {
+    ...removeResult
+  }
+}

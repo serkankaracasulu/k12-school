@@ -1,0 +1,25 @@
+fragment parentApplication on ParentApplication {
+  _id
+  studentId
+  userFullName
+  userId
+  email
+  status
+  studentFullName
+  institutionName
+}
+query MyParentApplications {
+  myParentApplications {
+    ...parentApplication
+  }
+}
+query ParentApplications($studentId: ObjectId!) {
+  parentApplications(studentId: $studentId) {
+    ...parentApplication
+  }
+}
+mutation invitationParent($studentId: ObjectId!, $email: String!) {
+  invitationParent(studentId: $studentId, email: $email) {
+    ...parentApplication
+  }
+}

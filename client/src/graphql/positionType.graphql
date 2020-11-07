@@ -1,0 +1,24 @@
+fragment point on Point {
+  coordinates
+}
+fragment coordinatesType on CoordinatesType {
+  accuracy
+  altitude
+  altitudeAccuracy
+  heading
+  speed
+  point {
+    ...point
+  }
+}
+fragment positionType on PositionType {
+  timestamp
+  coords {
+    ...coordinatesType
+  }
+}
+subscription PositionNotification {
+  positionNotification {
+    ...positionType
+  }
+}

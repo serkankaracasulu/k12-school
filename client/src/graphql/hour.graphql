@@ -1,0 +1,11 @@
+fragment hour on Hour {
+  _id
+  code
+  start
+  finish
+}
+query MyHour($parentStudentId: ObjectId) {
+  myHour(parentStudentId: $parentStudentId) {
+    ...hour
+  }
+}

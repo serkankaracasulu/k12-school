@@ -1,0 +1,45 @@
+fragment exam on Exam {
+  _id
+  lessonHourCode
+  lessonId
+  date
+  grades {
+    ...grade
+  }
+  educationYearId
+  termId
+}
+
+query Exams($lessonId: ObjectId!) {
+  exams(lessonId: $lessonId) {
+    ...exam
+  }
+}
+query MyExams($lessonId: ObjectId!) {
+  myExams(lessonId: $lessonId) {
+    ...exam
+    termName
+  }
+}
+mutation SetExam(
+  $lessonId: ObjectId!
+  $lessonHourCode: [Int!]!
+  $date: DateTime!
+  $_id: ObjectId
+) {
+  setExam(
+    data: {
+      lessonId: $lessonId
+      lessonHourCode: $lessonHourCode
+      date: $date
+      _id: $_id
+    }
+  ) {
+    ...exam
+  }
+}
+mutation DeleteExam($lessonId: ObjectId!, $examId: ObjectId!) {
+  deleteExam(lessonId: $lessonId, examId: $examId) {
+    ...removeResult
+  }
+}

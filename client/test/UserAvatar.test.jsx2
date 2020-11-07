@@ -1,0 +1,16 @@
+import React from "react";
+import {
+  render,
+  fireEvent,
+  waitForElement,
+  waitForElementToBeRemoved
+} from "./test-utils";
+import { renderHook } from "@testing-library/react-hooks";
+import hook from "./hookTrueFalse";
+import UserAvatar from "./../src/components/UserAvatar";
+describe("Loading", function() {
+  it("renders correctly", async function() {
+    const { container } = render(<UserAvatar />);
+    expect(container).toBeDefined();
+  });
+});

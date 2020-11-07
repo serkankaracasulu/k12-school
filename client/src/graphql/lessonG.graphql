@@ -1,0 +1,38 @@
+fragment lessonG on LessonG {
+  _id
+  name
+  teacherFields {
+    ...teacherField
+  }
+}
+query LessonsG {
+  lessonsG {
+    ...lessonG
+  }
+}
+mutation CreateLessonG($name: String!, $teacherFieldIds: [ObjectId!]!) {
+  createLessonG(lesson: { name: $name, teacherFieldIds: $teacherFieldIds }) {
+    ...lessonG
+  }
+}
+mutation EditLessonG(
+  $name: String
+  $_id: ObjectId!
+  $teacherFieldIds: [ObjectId!]!
+) {
+  editLessonG(
+    lesson: { name: $name, _id: $_id, teacherFieldIds: $teacherFieldIds }
+  ) {
+    ...lessonG
+  }
+}
+mutation RemoveLessonG($_id: ObjectId!) {
+  removeLessonG(_id: $_id) {
+    ...removeResult
+  }
+}
+mutation AddTeacherFieldsToLesson($ids: [ObjectId!]!, $_id: ObjectId!) {
+  addTeacherFieldsToLesson(ids: $ids, _id: $_id) {
+    ...lessonG
+  }
+}

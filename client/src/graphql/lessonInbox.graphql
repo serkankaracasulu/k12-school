@@ -1,0 +1,39 @@
+fragment lessonInbox on LessonInbox {
+  _id
+  message
+  title
+  lessonId
+  sent
+  teacherId
+  messageType
+}
+query LessonMesages(
+  $lessonId: ObjectId!
+  $skip: Int
+  $parentStudentId: ObjectId
+) {
+  lessonMessages(
+    lessonId: $lessonId
+    skip: $skip
+    parentStudentId: $parentStudentId
+  ) {
+    ...lessonInbox
+  }
+}
+mutation SendLessonMessage(
+  $lessonId: ObjectId!
+  $message: String!
+  $title: String!
+  $messageType: LessonMessageType!
+) {
+  sendLessonMessage(
+    data: {
+      lessonId: $lessonId
+      message: $message
+      title: $title
+      messageType: $messageType
+    }
+  ) {
+    ...lessonInbox
+  }
+}

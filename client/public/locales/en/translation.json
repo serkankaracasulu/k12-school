@@ -1,0 +1,50 @@
+{
+  "bar": {
+    "signIn": "LOGIN",
+    "signUp": "SIGN UP"
+  },
+  "button": {
+    "cancel": "Cancel",
+    "send": "Send",
+    "next": "Next",
+    "back": "Back",
+    "change": "Change",
+    "save": "SAVE",
+    "yes": "YES",
+    "no": "NO"
+  },
+  "name": "Name",
+  "eOkulCode": "E-School Code",
+  "email": "Email",
+  "password": "Password",
+  "firstName": "First Name",
+  "lastName": "Last Name",
+  "phone": "Phone",
+  "institutionName": "Institution Name",
+  "auth": {
+    "signInTitle": "Sign In",
+    "forgotPassword": "Forgot password?",
+    "dontHaveAccount": "Don't have an account? Sign Up",
+    "forgotPasswordTitle": "Forgot Password",
+    "signUpTitle": "Join Us",
+    "signUpButton": "SIGN UP",
+    "signInButton": "SIGN IN",
+    "alreadyHaveAnAccount": "Already have an account? Sign in",
+    "schoolOwner": "i want to create school administrator account.",
+    "passwordChange": "Password changed successfully",
+    "pickNewPassword": "Pick a new password"
+  },
+  "reSendConfirmEmail": {
+    "title": "Sending..."
+  },
+  "address": {
+    "address": "Address",
+    "addressLine1": "Address line 1",
+    "addressLine2": "Address line 2",
+    "city": "City",
+    "state": "State/Province/Region",
+    "postalCode": "Zip / Postal code",
+    "country": "Country",
+    "useAddressPayment": "Use this address for payment details."
+  }
+}

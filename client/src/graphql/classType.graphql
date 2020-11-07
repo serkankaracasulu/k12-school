@@ -1,0 +1,66 @@
+fragment classType on ClassType {
+  _id
+  name
+  level
+  code
+  code1
+  createdAt
+  studentCount
+  fullName
+  lessonCount
+  classroomTeacherId
+  classroomTeacher {
+    _id
+    firstName
+    lastName
+    fullName
+  }
+}
+
+query Classes($id: ObjectId!) {
+  classes(id: $id) {
+    ...classType
+  }
+}
+query Class($schoolId: ObjectId!, $classId: ObjectId!) {
+  class(schoolId: $schoolId, classId: $classId) {
+    ...classType
+  }
+}
+
+mutation SetClassroomTeacher(
+  $schoolId: ObjectId!
+  $classId: ObjectId!
+  $userId: ObjectId
+) {
+  setClassroomTeacher(schoolId: $schoolId, classId: $classId, userId: $userId) {
+    code
+    success
+  }
+}
+mutation CreateClass(
+  $_id: ObjectId
+  $schoolId: ObjectId!
+  $name: String
+  $level: Int!
+  $code: String
+  $code1: String
+) {
+  createClass(
+    data: {
+      _id: $_id
+      schoolId: $schoolId
+      name: $name
+      level: $level
+      code: $code
+      code1: $code1
+    }
+  ) {
+    ...classType
+  }
+}
+mutation DeleteClassType($schoolId: ObjectId!, $classId: ObjectId!) {
+  deleteClass(schoolId: $schoolId, classId: $classId) {
+    ...removeResult
+  }
+}

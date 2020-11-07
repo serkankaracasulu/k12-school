@@ -1,0 +1,27 @@
+fragment schoolG on SchoolG {
+  _id
+  name
+  classes {
+    ...classG
+  }
+}
+query SchoolG($id: ObjectId!) {
+  schoolG(id: $id) {
+    ...schoolG
+  }
+}
+query SchoolsG {
+  schoolsG {
+    ...schoolG
+  }
+}
+query SchoolGClasses($id: ObjectId!) {
+  schoolG(id: $id) {
+    ...schoolG
+  }
+}
+mutation CreateSchoolG($name: String!, $classes: [ClassesGInput!]!) {
+  createSchoolG(data: { name: $name, classes: $classes }) {
+    ...schoolG
+  }
+}

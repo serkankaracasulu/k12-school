@@ -1,0 +1,85 @@
+fragment study on Study {
+  _id
+  date
+  subject
+  detail
+  dateTimeSpan
+  public
+  capacity
+  permissionClasses
+  duration
+  lessonName
+  students {
+    _id
+    status
+    studentId
+    state
+    student {
+      _id
+      firstName
+      lastName
+      fullName
+      profilePhoto
+    }
+  }
+}
+query Studies($week: Int, $query: StudyQuery, $teacherId: ObjectId) {
+  studies(week: $week, query: $query, teacherId: $teacherId) {
+    ...study
+  }
+}
+mutation CreateStudy(
+  $lessonId: ObjectId
+  $date: DateTime!
+  $duration: Int!
+  $subject: String!
+  $detail: String
+  $public: Boolean
+  $capacity: Int
+  $permissionClasses: [ObjectId!]
+) {
+  createStudy(
+    data: {
+      lessonId: $lessonId
+      date: $date
+      duration: $duration
+      subject: $subject
+      detail: $detail
+      public: $public
+      capacity: $capacity
+      permissionClasses: $permissionClasses
+    }
+  ) {
+    ...study
+  }
+}
+mutation DeleteStudy($studyId: ObjectId!) {
+  deleteStudy(studyId: $studyId) {
+    ...removeResult
+  }
+}
+mutation JoinStudy($studyId: ObjectId!, $r: Boolean) {
+  joinStudy(studyId: $studyId, r: $r) {
+    ...study
+  }
+}
+mutation AcceptJoinStudy(
+  $studentId: ObjectId!
+  $studyId: ObjectId!
+  $r: Boolean
+  $status: StudyStudentStatus
+) {
+  acceptJoinStudy(
+    studentId: $studentId
+    studyId: $studyId
+    r: $r
+    status: $status
+  ) {
+    ...study
+  }
+}
+mutation UpdateStudy($studyId: ObjectId!, $studyStudentId: ObjectId!) {
+  updateStudyState(studyStudentId: $studyStudentId, studyId: $studyId) {
+    ...study
+  }
+}

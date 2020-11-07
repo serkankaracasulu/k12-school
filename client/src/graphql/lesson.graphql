@@ -1,0 +1,91 @@
+fragment lesson on Lesson {
+  _id
+  lessonId
+  educationYearId
+  name
+  lessonName
+  weeklyHour
+  createdAt
+  lessonWeeklySchedules {
+    ...weeklySchedule
+  }
+  teacherId
+  teacher {
+    _id
+    firstName
+    lastName
+    fullName
+  }
+}
+fragment weeklySchedule on WeeklySchedule {
+  _id
+  day
+  hourCode
+}
+
+query Lessons(
+  $schoolId: ObjectId!
+  $classId: ObjectId!
+  $educationYearId: ObjectId!
+) {
+  lessons(
+    data: {
+      schoolId: $schoolId
+      classId: $classId
+      educationYearId: $educationYearId
+    }
+  ) {
+    ...lesson
+  }
+}
+query MyLessonsStudent($parentStudentId: ObjectId) {
+  studentMyLessons(parentStudentId: $parentStudentId) {
+    ...lesson
+  }
+}
+query GetLesson($lessonId: ObjectId!) {
+  getLesson(lessonId: $lessonId) {
+    _id
+    ...lesson
+  }
+}
+mutation AddLesson(
+  $_id: ObjectId
+  $lessonId: ObjectId
+  $schoolId: ObjectId!
+  $classId: ObjectId!
+  $name: String
+  $weeklyHour: Int!
+  $teacherId: ObjectId
+) {
+  addLesson(
+    lesson: {
+      _id: $_id
+      lessonId: $lessonId
+      schoolId: $schoolId
+      classId: $classId
+      name: $name
+      weeklyHour: $weeklyHour
+      teacherId: $teacherId
+    }
+  ) {
+    ...lesson
+  }
+}
+mutation RemoveLesson($lessonId: ObjectId!) {
+  removeLesson(lessonId: $lessonId) {
+    ...removeResult
+  }
+}
+mutation SetLessonSchedule($lessonId: ObjectId!, $day: Int!, $hourCode: Int!) {
+  setLessonSchedule(
+    schedule: { lessonId: $lessonId, day: $day, hourCode: $hourCode }
+  ) {
+    ...lesson
+  }
+}
+mutation RemoveScheduleToLesson($lessonId: ObjectId!, $scheduleId: ObjectId!) {
+  removeScheduleToLesson(lessonId: $lessonId, scheduleId: $scheduleId) {
+    ...lesson
+  }
+}

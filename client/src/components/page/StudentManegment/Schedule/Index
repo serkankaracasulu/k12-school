@@ -1,0 +1,210 @@
+import React from "react";
+import { Typography, Avatar, Grid, Paper } from "@material-ui/core/";
+import { DateTime } from "luxon";
+import { useQuery } from "@apollo/client";
+import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import clsx from "clsx";
+import { MY_LESSONS } from "../query";
+import ACTIVE_STUDENT from "./query";
+import { ActiveStudent } from "../../../../../myTypes";
+
+const height = "81px";
+const dayHeight = "70px";
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    background: {
+      backgroundColor: theme.palette.primary.main,
+      fontSize: "inherit"
+    },
+    border: {
+      borderRightStyle: "solid",
+      borderRightWidth: "1px",
+      borderRightColor: "rgba(0, 0, 0, 0.12)"
+    },
+    bottomBorder: {
+      borderBottomStyle: "solid",
+      borderBottomWidth: "1px",
+      borderBottomColor: "rgba(0, 0, 0, 0.12)"
+    },
+    height: {
+      minHeight: height,
+      maxHeight: height
+    },
+    headerheight: {
+      height: "40px",
+      minHeight: "40px"
+    },
+    day: {
+      position: "sticky",
+      top: 0,
+      height: dayHeight,
+      backgroundColor: theme.palette.background.paper,
+      zIndex: theme.zIndex.appBar
+    },
+    hours: {
+      position: "sticky",
+      backgroundColor: "white",
+      left: 0,
+      flexGrow: 0.4,
+      boxShadow: theme.shadows[1]
+    },
+    shadow: {
+      boxShadow: theme.shadows[1],
+      height: "3px",
+      width: "100%",
+      position: "absolute",
+      bottom: 0
+    }
+  })
+);
+export default function WeeklySchedule() {
+  const studentsQuery = useQuery<ActiveStudent, void>(ACTIVE_STUDENT);
+  const { myHour } = (studentsQuery.data &&
+    studentsQuery.data.activeStudent) || { myHour: [] };
+  const { data } = useQuery<StudentMyLessons, StudentMyLessonsTvariables>(
+    MY_LESSONS
+  );
+  const classes = useStyles();
+  const [days] = React.useState<
+    {
+      day: number;
+      shortName: string;
+      today: boolean;
+    }[]
+  >(
+    [0, 1, 2, 3, 4, 5, 6].map((_, index) => {
+      return {
+        day: DateTime.local()
+          .startOf("week")
+          .plus({ day: index }).day,
+        shortName: DateTime.local()
+          .startOf("week")
+          .plus({ day: index }).weekdayShort,
+        today:
+          DateTime.local().day ===
+          DateTime.local()
+            .startOf("week")
+            .plus({ day: index }).day
+      };
+    })
+  );
+  const getLessonName = (day: number, hourCode: number) => {
+    if (data) {
+      const lesssonData = data.studentMyLessons.find(lesson =>
+        lesson.lessonWeeklySchedules.some(
+          ws => ws.day === day && ws.hourCode === hourCode
+        )
+      );
+      if (lesssonData) return lesssonData.lessonName || lesssonData.name;
+      return "";
+    }
+    return "";
+  };
+  return (
+    <Paper style={{ overflow: "auto" }}>
+      <Grid
+        container
+        direction="row"
+        alignItems="stretch"
+        style={{
+          minWidth: "900px",
+          height: "84vh",
+          maxHeight: "850px"
+        }}
+      >
+        <Grid
+          container
+          item
+          xs
+          className={clsx(classes.hours, classes.border)}
+          direction="column"
+          justify="space-between"
+        >
+          <Grid
+            item
+            className={clsx(classes.bottomBorder, classes.hour, classes.day)}
+          >
+            <div className={classes.shadow} />
+          </Grid>
+          {myHour.map(hour => (
+            <Grid
+              container
+              direction="column"
+              justify="center"
+              alignItems="center"
+              key={hour.code}
+              className={clsx(
+                classes.bottomBorder,
+                classes.height,
+                classes.hour,
+                classes.width
+              )}
+            >
+              <Typography color="textSecondary" variant="body2">
+                {hour.start}
+              </Typography>
+              <Typography color="textPrimary" variant="caption">
+                {hour.code}
+              </Typography>
+              <Typography color="textSecondary" variant="body2">
+                {hour.finish}
+              </Typography>
+            </Grid>
+          ))}
+        </Grid>
+        {days.map((day, dayIndex) => (
+          <Grid
+            container
+            item
+            xs
+            key={day.day}
+            direction="column"
+            justify="space-between"
+            className={classes.border}
+          >
+            {myHour.map((hour, hourIndex) => (
+              <React.Fragment key={hour.code}>
+                {hourIndex === 0 && (
+                  <Grid
+                    container
+                    direction="column"
+                    justify="center"
+                    alignItems="center"
+                    key={hour.code}
+                    className={clsx(classes.bottomBorder, classes.day)}
+                  >
+                    <Typography
+                      color="textSecondary"
+                      variant="body2"
+                      align="center"
+                    >
+                      {day.shortName}
+                    </Typography>
+                    {day.today ? (
+                      <Avatar className={classes.background}> {day.day}</Avatar>
+                    ) : (
+                      <Typography
+                        color="textSecondary"
+                        variant="body1"
+                        align="center"
+                      >
+                        {day.day}
+                      </Typography>
+                    )}
+                    <div className={classes.shadow} />
+                  </Grid>
+                )}
+                <Grid
+                  item
+                  className={clsx(classes.bottomBorder, classes.height)}
+                >
+                  {getLessonName(dayIndex, hour.code)}
+                </Grid>
+              </React.Fragment>
+            ))}
+          </Grid>
+        ))}
+      </Grid>
+    </Paper>
+  );
+}

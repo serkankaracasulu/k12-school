@@ -1,0 +1,53 @@
+fragment education on Education {
+  _id
+  educationLevelName
+  educationLevel
+  educationType
+  educationTypeName
+  educationlanguage
+  universityName
+  department {
+    _id
+    name
+  }
+  startDate
+  finishDate
+}
+
+query Educations {
+  educations {
+    ...education
+  }
+}
+
+mutation EditEducation(
+  $educationLevel: Int!
+  $educationLevelName: String!
+  $universityId: ObjectId!
+  $universityName: String!
+  $educationType: Int!
+  $educationTypeName: String!
+  $educationlanguage: Int!
+  $educationlanguageName: String!
+  $departmentId: ObjectId!
+  $startDate: DateTime!
+  $finishDate: DateTime
+) {
+  editEducation(
+    education: {
+      educationLevel: $educationLevel
+      universityId: $universityId
+      universityName: $universityName
+      educationLevelName: $educationLevelName
+      educationTypeName: $educationTypeName
+      educationType: $educationType
+      educationlanguage: $educationlanguage
+      educationlanguageName: $educationlanguageName
+      departmentId: $departmentId
+      startDate: $startDate
+      finishDate: $finishDate
+    }
+  ) {
+    ...education
+  }
+}

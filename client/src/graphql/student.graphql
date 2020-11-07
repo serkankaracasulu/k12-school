@@ -1,0 +1,117 @@
+fragment student on Student {
+  _id
+  firstName
+  lastName
+  school
+  class
+  fullName
+  username
+  schoolNo
+  profilePhoto
+  citizenshipId
+  schoolName
+  className
+  foreignLanguage
+}
+query ActiveStudent {
+  activeStudent {
+    ...person
+  }
+}
+
+query Student($studentId: ObjectId, $citizenshipId: String) {
+  student(studentId: $studentId, citizenshipId: $citizenshipId) {
+    ...student
+  }
+}
+query Students(
+  $schoolId: ObjectId
+  $classId: ObjectId
+  $notClass: Boolean
+  $studentIds: [ObjectId!]
+  $search: String
+  $page: Int
+) {
+  students(
+    query: {
+      schoolId: $schoolId
+      classId: $classId
+      notClass: $notClass
+      studentIds: $studentIds
+      search: $search
+      page: $page
+    }
+  ) {
+    ...student
+  }
+}
+query StudentCount($schoolId: ObjectId, $classId: ObjectId) {
+  studentCount(query: { schoolId: $schoolId, classId: $classId }) {
+    studentCount
+  }
+}
+mutation transferStudents(
+  $schoolId: ObjectId!
+  $classId: ObjectId
+  $students: [ObjectId!]!
+) {
+  transferStudents(
+    data: { schoolId: $schoolId, classId: $classId, students: $students }
+  ) {
+    code
+    success
+  }
+}
+mutation editStudentCitizenshipId(
+  $studentId: ObjectId!
+  $citizenshipId: String!
+) {
+  editStudentCitizenshipId(
+    data: { studentId: $studentId, citizenshipId: $citizenshipId }
+  ) {
+    success
+  }
+}
+mutation AddStudent(
+  $firstName: String!
+  $lastName: String!
+  $citizenshipId: String!
+  $school: ObjectId
+  $class: ObjectId
+  $profilePhotoBase64: String
+  $schoolNo: String
+) {
+  addStudent(
+    student: {
+      firstName: $firstName
+      lastName: $lastName
+      citizenshipId: $citizenshipId
+      school: $school
+      class: $class
+      profilePhotoBase64: $profilePhotoBase64
+      schoolNo: $schoolNo
+    }
+  ) {
+    ...student
+  }
+}
+mutation DismissStudent($studentId: ObjectId!, $level: Int!) {
+  dismissStudent(studentId: $studentId, level: $level) {
+    ...removeResult
+  }
+}
+mutation DeleteSchool($schoolId: ObjectId!) {
+  deleteSchool(schoolId: $schoolId) {
+    ...removeResult
+  }
+}
+mutation StudentResetPassword($studentId: ObjectId!) {
+  resetStudentPassword(studentId: $studentId) {
+    password
+  }
+}
+mutation StudentSignIn($username: String!, $password: String!) {
+  studentSignIn(username: $username, password: $password) {
+    token
+  }
+}

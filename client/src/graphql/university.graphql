@@ -1,0 +1,23 @@
+fragment university on University {
+  _id
+  name
+  universityLogoUrl
+}
+query Universities {
+  universities {
+    ...university
+  }
+}
+mutation EditUniversity(
+  $_id: ObjectId
+  $name: String!
+  $universityLogoFile: Upload
+) {
+  editUniversity(
+    _id: $_id
+    name: $name
+    universityLogoFile: $universityLogoFile
+  ) {
+    ...university
+  }
+}

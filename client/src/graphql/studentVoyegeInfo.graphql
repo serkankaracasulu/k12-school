@@ -1,0 +1,13 @@
+fragment studentVoyegeInfo on StudentVoyegeInfo {
+  _id
+  student {
+    ...student
+    address {
+      ...address
+    }
+  }
+  studentId
+  status
+  order
+  disabled
+}

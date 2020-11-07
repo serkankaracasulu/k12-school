@@ -1,0 +1,29 @@
+fragment absence on Absence {
+  _id
+  lessonId
+  date
+  hourCode
+  studentId
+  day
+}
+query Absences($t: Boolean, $parentStudentId: ObjectId) {
+  absences(query: { t: $t }, parentStudentId: $parentStudentId) {
+    ...absence
+  }
+}
+mutation DeleteAbsence($absenceId: ObjectId!) {
+  deleteAbsence(absenceId: $absenceId) {
+    ...removeResult
+  }
+}
+mutation CreateAbsence(
+  $studentIds: [ObjectId!]!
+  $lessonId: ObjectId!
+  $hourCode: Int!
+) {
+  createAbsence(
+    data: { studentIds: $studentIds, lessonId: $lessonId, hourCode: $hourCode }
+  ) {
+    ...absence
+  }
+}

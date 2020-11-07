@@ -1,0 +1,67 @@
+fragment voyageTime on VoyageTime {
+  _id
+  day
+  hour
+  isStart
+  sessionId
+  isTakeSchool
+  studentInfos {
+    ...studentVoyegeInfo
+  }
+}
+query VoyageTime($voyageTimeId: ObjectId!, $voyageId: ObjectId!) {
+  voyageTime(voyageTimeId: $voyageTimeId, voyageId: $voyageId) {
+    ...voyageTime
+  }
+}
+mutation UpdatePosition(
+  $position: PositionInput!
+  $voyageId: ObjectId!
+  $timeId: ObjectId!
+  $sessionId: ObjectId!
+) {
+  updatePosition(
+    data: {
+      position: $position
+      voyageId: $voyageId
+      timeId: $timeId
+      sessionId: $sessionId
+    }
+  ) {
+    ...positionType
+  }
+}
+mutation StartPosition(
+  $position: PositionInput!
+  $voyageId: ObjectId!
+  $timeId: ObjectId!
+) {
+  startPosition(
+    data: { position: $position, voyageId: $voyageId, timeId: $timeId }
+  ) {
+    ...voyageTime
+  }
+}
+mutation StopPosition($voyageId: ObjectId!, $timeId: ObjectId!) {
+  stopPosition(data: { voyageId: $voyageId, timeId: $timeId }) {
+    ...voyageTime
+  }
+}
+mutation addVoyageTime(
+  $voyageId: ObjectId!
+  $day: Int!
+  $hour: Time!
+  $isTakeSchool: Boolean!
+) {
+  addVoyageTime(
+    data: { day: $day, hour: $hour, isTakeSchool: $isTakeSchool }
+    voyageId: $voyageId
+  ) {
+    ...voyageTime
+  }
+}
+mutation removeVoyageTime($voyageId: ObjectId!, $timeId: ObjectId!) {
+  removeVoyageTime(timeId: $timeId, voyageId: $voyageId) {
+    ...removeResult
+  }
+}

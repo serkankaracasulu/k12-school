@@ -1,0 +1,157 @@
+import React from "react";
+import randomstring from "randomstring";
+import {
+  render,
+  fireEvent,
+  waitForElement,
+  waitForElementToBeRemoved,
+  getByText,
+  getByLabelText,
+  getByRole,
+  getByPlaceholderText,
+  getByTestId,
+  getAllByLabelText
+} from "../../test-utils";
+import { act } from "react-dom/test-utils";
+import { newHours } from "../../repository";
+import { renderHook } from "@testing-library/react-hooks";
+import Schools from "../../../src/components/page/dashboard/School/Index";
+import termData from "../../../src/components/page/dashboard/School/Term/termValues";
+const wait = require("waait");
+describe("Schools", function() {
+  it("should renders without error", async function() {
+    const { container } = render(<Schools />);
+  });
+  it("should renders loading state initially", async function() {
+    const { container } = render(<Schools />, null, true);
+    expect(getByRole(container, "progressbar")).toBeDefined();
+  });
+  it("should update school", async function() {
+    const { container } = render(<Schools />);
+    const editbutton = await waitForElement(() =>
+      getAllByLabelText(container, "edit school")
+    );
+    fireEvent.click(editbutton[0]);
+    const name = getByPlaceholderText(container, "Okul adı");
+    const schoolName = "Schoo Name 2";
+    fireEvent.change(name, { target: { value: "Schoo Name 2" } });
+    const eOkulCode = getByPlaceholderText(container, "EOkul kodu");
+    const doneButton = getByLabelText(container, "edit done");
+    fireEvent.click(doneButton);
+    await waitForElement(() =>
+      getByRole(container.parentElement, "alertdialog")
+    );
+  });
+  //hata veriyor ama çalışması lazım
+  // await expect(      getByLabelText(container.parentElement, "success")    ).toBeTruthy();  });
+  it("should create school", async function() {
+    const { container } = render(<Schools />);
+    const newButton = await waitForElement(() =>
+      getByLabelText(container, "add school")
+    );
+    fireEvent.click(newButton);
+    const name = container.querySelector("#name");
+    const code = container.querySelector("#eOkulCode");
+    const createButton = getByLabelText(container, "create school");
+    fireEvent.change(name, { target: { value: "New School" } });
+    fireEvent.change(code, { target: { value: "78935715" } });
+    fireEvent.click(createButton);
+    await waitForElement(() =>
+      getByRole(container.parentElement, "alertdialog")
+    );
+    await expect(
+      getByLabelText(container.parentElement, "success")
+    ).toBeTruthy();
+  });
+  it("should create hour", async function() {
+    const { container } = render(<Schools />);
+    const openHour = await waitForElement(() =>
+      getByLabelText(container, "open hours")
+    );
+    fireEvent.click(openHour);
+    const addHour = await waitForElement(() =>
+      getByLabelText(container.parentElement, "add hour")
+    );
+    fireEvent.click(addHour);
+    const next = await waitForElement(() =>
+      getByLabelText(container.parentElement, "next")
+    );
+    fireEvent.click(next);
+    const hourSave = await waitForElement(() =>
+      getByLabelText(container.parentElement, "hour save")
+    );
+    fireEvent.click(hourSave);
+    await waitForElement(() =>
+      getByRole(container.parentElement, "alertdialog")
+    );
+    await expect(
+      getByLabelText(container.parentElement, "success")
+    ).toBeTruthy();
+  });
+  it("should create term default value", async function() {
+    const { container } = render(<Schools />);
+    const openTerm = await waitForElement(() =>
+      getByLabelText(container, "open terms")
+    );
+    fireEvent.click(openTerm);
+    const addTerm = await waitForElement(() =>
+      getByLabelText(container.parentElement, "add term")
+    );
+    fireEvent.click(addTerm);
+    const yesButton = await waitForElement(() =>
+      getByLabelText(container.parentElement, "add default term")
+    );
+    fireEvent.click(yesButton);
+    await waitForElement(() =>
+      getByTestId(container.parentElement, "term-save-success")
+    );
+  });
+  it("should update term", async function() {
+    const { container } = render(<Schools />);
+    const openTerm = await waitForElement(() =>
+      getByLabelText(container, "open terms")
+    );
+    fireEvent.click(openTerm);
+    const addTerm = await waitForElement(() =>
+      getByLabelText(container.parentElement, "open edit term")
+    );
+    fireEvent.click(addTerm);
+    const termName = getByLabelText(
+      container.parentElement,
+      "term name"
+    ).querySelector("input");
+    fireEvent.change(termName, { target: { value: "lorem ipsum 44" } });
+    const saveButton = await waitForElement(() =>
+      getByLabelText(container.parentElement, "save edit term")
+    );
+    fireEvent.click(saveButton);
+    /*
+    await waitForElement(() =>
+      getByRole(container.parentElement, "alertdialog")
+    );
+    expect(getByLabelText(container.parentElement, "success")).toBeTruthy();
+   */
+  });
+  it("should create term custom value", async function() {
+    const { container } = render(<Schools />);
+    const openTerm = await waitForElement(() =>
+      getByLabelText(container, "open terms")
+    );
+    fireEvent.click(openTerm);
+    const addTerm = await waitForElement(() =>
+      getByLabelText(container.parentElement, "add term")
+    );
+    fireEvent.click(addTerm);
+    const noButton = await waitForElement(() =>
+      getByLabelText(container.parentElement, "add custom term")
+    );
+    fireEvent.click(noButton);
+    const saveButton = await waitForElement(() =>
+      getByLabelText(container.parentElement, "term save")
+    );
+    fireEvent.click(saveButton);
+    await waitForElement(() =>
+      getByTestId(container.parentElement, "term-save-success")
+    );
+  });
+});

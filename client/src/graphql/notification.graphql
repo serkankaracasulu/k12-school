@@ -1,0 +1,29 @@
+fragment notification on Notification {
+  _id
+  lessonId
+  state
+  notificationType
+  action
+  createdAt
+  targetId
+  message
+  lessonName
+}
+query StudentNotifications($skip: Int, $parentStudentId: ObjectId) {
+  studentNotifications(skip: $skip, parentStudentId: $parentStudentId) {
+    ...notification
+  }
+}
+mutation studentNotificationsStatusUpdate(
+  $state: StudentNotificationState!
+  $ids: [ObjectId!]!
+) {
+  studentNotificationsStatusUpdate(state: $state, ids: $ids) {
+    ...updateResults
+  }
+}
+subscription studentNotificationUpdated {
+  studentNotificationUpdated {
+    ...notification
+  }
+}

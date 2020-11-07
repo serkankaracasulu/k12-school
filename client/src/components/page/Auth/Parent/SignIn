@@ -1,0 +1,151 @@
+import * as React from "react";
+import { Link as RauterLink } from "react-router-dom";
+import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import ResendConfirmEmail from "./ResendConfirmEmail";
+import validate from "../../../../helper/validate";
+import gql from "graphql-tag";
+import schema from "./schema";
+import { useTranslation } from "react-i18next";
+import {
+  Button,
+  TextField,
+  Typography,
+  Grid,
+  LinearProgress,
+} from "@material-ui/core";
+import { useMutation, useQuery } from "@apollo/client";
+import FormConatiner from "../Index";
+import {
+  ParentLoginTvariables,
+  ParentLogin,
+  KeysMatching,
+  GetActiveParent,
+} from "../../../myTypes";
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    form: {
+      width: "100%", // Fix IE 11 issue.
+      marginTop: theme.spacing(1),
+    },
+    submit: {
+      margin: theme.spacing(3, 0, 2),
+    },
+  })
+);
+
+export default function SignIn() {
+  const { t } = useTranslation();
+  const [errors, setErrors] = React.useState<
+    KeysMatching<ParentLoginTvariables>
+  >({});
+  const { refetch, loading: aLoading } = useQuery<GetActiveParent, void>(
+    GET_ACTIVE_PARENT,
+    { onError: () => {} }
+  );
+  const [openConfirm, setOpenConfirm] = React.useState<boolean>(false);
+  const [variables, setVariables] = React.useState(new ParentLoginTvariables());
+  const handleChange = (name: string) => (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setVariables({ ...variables, [name]: event.currentTarget.value });
+  };
+  const classes = useStyles();
+  /*
+  const [signinUser, { loading, error }] = useMutation<
+    ParentLogin,
+    ParentLoginTvariables
+  >(PARENT_SIGNIN, {
+    onError: (err) => {},
+    ignoreResults: false,
+    onCompleted: (tData) => {
+      localStorage.setItem("token", tData.paretnSignIn.token);
+      refetch();
+      window.location.href = "/";
+    },
+  });
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const validateError = validate(variables, schema);
+    if (validateError) {
+      setErrors(validateError);
+      return;
+    }
+    signinUser({ variables });
+  };
+*/
+  return (
+    <>
+      <FormConatiner title={t("auth.signInTitle")}>
+        <form className={classes.form}>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            onChange={handleChange("email")}
+            error={Boolean(errors?.email)}
+            helperText={errors?.email}
+            label={t("email")}
+            name="email"
+            autoComplete="email"
+            autoFocus
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            error={Boolean(errors?.password)}
+            helperText={errors?.password}
+            fullWidth
+            onChange={handleChange("password")}
+            name="password"
+            label={t("password")}
+            type="password"
+            autoComplete="current-password"
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+          >
+            {t("auth.signInButton")}
+          </Button>
+          <>
+            <Typography>Hesabınız onaylı değil.</Typography>
+            <Typography component="span">Onaylama linki</Typography>
+            <Button
+              size="small"
+              style={{ marginLeft: "8px" }}
+              onClick={() => setOpenConfirm(true)}
+              variant="contained"
+              color="primary"
+            >
+              ALMADINIZ MI?
+            </Button>
+          </>
+          <Typography color="error">Email yada şifre hatalı</Typography>
+          <Grid container>
+            <Grid item xs>
+              <RauterLink
+                to="/forgotpasswordp"
+                style={{ textDecoration: "none" }}
+              >
+                <Typography variant="body2">
+                  {t("auth.forgotPassword")}
+                </Typography>
+              </RauterLink>
+            </Grid>
+          </Grid>
+        </form>
+      </FormConatiner>
+      {openConfirm && (
+        <ResendConfirmEmail
+          unVerifiedEmail={variables.email}
+          setOpen={() => setOpenConfirm(false)}
+        />
+      )}
+    </>
+  );
+}

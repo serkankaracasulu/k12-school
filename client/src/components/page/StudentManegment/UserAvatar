@@ -1,0 +1,115 @@
+import * as React from "react";
+import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import { useQuery } from "@apollo/client";
+import {
+  Menu,
+  MenuItem,
+  IconButton,
+  Typography,
+  Divider,
+  CircularProgress
+} from "@material-ui/core/";
+
+import { deepPurple } from "@material-ui/core/colors";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+import { Link } from "react-router-dom";
+import logOutUser from "../../../helper/logoutUser";
+import { ACTIVE_STUDENT } from "../../../queries";
+import { ActiveStudent } from "../../../../myTypes";
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    avatar: {
+      margin: 10
+    },
+    wrapper: {
+      margin: theme.spacing(1),
+      position: "relative"
+    },
+    buttonProgress: {
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      marginTop: -12.5,
+      marginLeft: -12.6
+    },
+    bigAvatar: {
+      margin: 10,
+      width: 60,
+      height: 60
+    },
+    purpleAvatar: {
+      margin: 10,
+      color: "#fff",
+      backgroundColor: deepPurple[500]
+    },
+    Typography: {
+      marginLeft: 15,
+      marginRight: 15
+    }
+  })
+);
+
+export default function UserAvatar() {
+  const classes = useStyles();
+  const [anchorEl, setAnchorEl] = React.useState<Element | null>(null);
+  function handleClick(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    setAnchorEl(event.currentTarget);
+  }
+  const { data, loading } = useQuery<ActiveStudent, void>(ACTIVE_STUDENT);
+  function handleClose(event: React.MouseEvent<EventTarget>) {
+    setAnchorEl(null);
+    if (action === "logout") {
+      logOutUser();
+    }
+  }
+  if (loading)
+    return (
+      <IconButton
+        aria-label="loading user"
+        aria-controls="menu-appbar"
+        aria-haspopup="true"
+        color="inherit"
+        className={classes.wrapper}
+      >
+        <CircularProgress className={classes.buttonProgress} size={25} />
+        <AccountCircle />
+      </IconButton>
+    );
+  if (data && data.activeStudent)
+    return (
+      <>
+        <IconButton
+          aria-label="account of current user"
+          aria-controls="menu-appbar"
+          aria-haspopup="true"
+          onClick={handleClick}
+          color="inherit"
+        >
+          <AccountCircle />
+        </IconButton>
+        <Menu
+          id="user-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+        >
+          {data.activeStudent && (
+            <Typography className={classes.Typography}>
+              {data.activeStudent.fullName}
+            </Typography>
+          )}
+          <Divider />
+          <MenuItem onClick={handleClose} component={Link} to="/profile">
+            Ben
+          </MenuItem>
+          <MenuItem onClick={handleClose} component={Link} to="/student">
+            Okulum
+          </MenuItem>
+          <MenuItem onClick={handleClose}>Çıkış</MenuItem>
+        </Menu>
+      </>
+    );
+  return <span />;
+}

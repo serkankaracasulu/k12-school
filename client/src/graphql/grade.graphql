@@ -1,0 +1,21 @@
+fragment grade on Grade {
+  _id
+  studentId
+  grade
+}
+
+mutation SetExamGrade(
+  $lessonId: ObjectId!
+  $examId: ObjectId!
+  $studentId: ObjectId!
+  $grade: Int!
+) {
+  setExamGrade(
+    lessonId: $lessonId
+    examId: $examId
+    studentId: $studentId
+    grade: $grade
+  ) {
+    ...grade
+  }
+}

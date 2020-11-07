@@ -1,0 +1,6 @@
+fragment term on Term {
+  _id
+  name
+  start
+  finish
+}

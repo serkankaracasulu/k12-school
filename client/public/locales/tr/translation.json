@@ -1,0 +1,50 @@
+{
+  "bar": {
+    "signIn": "OTURUM AÇ",
+    "signUp": "KAYIT OL"
+  },
+  "button": {
+    "cancel": "İPTAL",
+    "send": "GÖNDER",
+    "next": "İLERİ",
+    "back": "GERİ",
+    "change": "DEĞİŞTİR",
+    "save": "KAYDET",
+    "yes": "EVET",
+    "no": "HAYIR"
+  },
+  "name": "İsim",
+  "eOkulCode": "E-Okul Kodu",
+  "email": "E-Posta",
+  "password": "Şifre",
+  "firstName": "İsim",
+  "lastName": "Soyisim",
+  "phone": "Telefon",
+  "institutionName": "Kurum Adı",
+  "auth": {
+    "signInTitle": "Oturum Aç",
+    "forgotPassword": "Şifreyi unuttunuz mu?",
+    "dontHaveAccount": "Hesabınız yok mu? Hesap oluştun.",
+    "forgotPasswordTitle": "Şifreyi Unuttum",
+    "signUpTitle": "Bize Katılın",
+    "signUpButton": "KATIL",
+    "signInButton": "Oturum Aç",
+    "alreadyHaveAnAccount": "Zaten hesabınız var mı? Oturum açın.",
+    "schoolOwner": "Okul yönetim hesabı açmak istiyorum.",
+    "passwordChange": "Şifre başarıyla değiştirildi.",
+    "pickNewPassword": "Yeni bir şifre seçin"
+  },
+  "reSendConfirmEmail": {
+    "title": "Gönderiliyor..."
+  },
+  "address": {
+    "address": "Adres",
+    "addressLine1": "1. adres satırı",
+    "addressLine2": "2. adres satırı",
+    "city": "İlçe",
+    "state": "İl",
+    "postalCode": "Posta kodu",
+    "country": "Ülke",
+    "useAddressPayment": "Bu adresi fatura adresi olarak da kullan."
+  }
+}

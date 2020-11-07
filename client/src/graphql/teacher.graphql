@@ -1,0 +1,20 @@
+fragment teacher on Teacher {
+  _id
+  institutionId
+  schoolIds
+  allSchool
+  addedById
+}
+query TeachersFullname {
+  teachers {
+    _id
+    firstName
+    lastName
+    fullName
+  }
+}
+mutation DismissTeacher($teacherId: ObjectId!) {
+  dismissTeacher(teacherId: $teacherId) {
+    ...removeResult
+  }
+}

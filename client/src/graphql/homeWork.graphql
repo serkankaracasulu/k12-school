@@ -1,0 +1,31 @@
+fragment homeWork on HomeWork {
+  _id
+  message
+  lessonId
+  title
+  sent
+  file
+}
+query HomeWorks($lessonId: ID!, $skip: Int, $i: ID) {
+  homeWorks(lessonId: $lessonId, skip: $skip, i: $i) {
+    ...homeWork
+  }
+}
+query HomeWorksStudent($lessonId: ID!, $skip: Int) {
+  homeWorks(lessonId: $lessonId, skip: $skip) {
+    ...homeWork
+  }
+}
+mutation SendHomeWork(
+  $lessonId: ObjectId!
+  $message: String!
+  $title: String!
+  $homeWorkFile: Upload
+) {
+  sendHomeWork(
+    data: { lessonId: $lessonId, message: $message, title: $title }
+    homeWorkFile: $homeWorkFile
+  ) {
+    ...homeWork
+  }
+}

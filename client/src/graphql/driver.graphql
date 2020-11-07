@@ -1,0 +1,79 @@
+fragment driverPart on User {
+  _id
+  firstName
+  lastName
+  fullName
+  createdAt
+  citizenshipId
+  driver {
+    _id
+    institutions {
+      ...driverInstitution
+    }
+  }
+}
+fragment driver on Driver {
+  _id
+  institutions {
+    ...driverInstitution
+  }
+}
+query StudentsDriver(
+  $search: String!
+  $institutionId: ObjectId!
+  $studentIds: [ObjectId!]
+) {
+  studentsDriver(
+    query: {
+      search: $search
+      institutionId: $institutionId
+      studentIds: $studentIds
+    }
+  ) {
+    ...student
+  }
+}
+query driverInsitutions {
+  driverInsitutions {
+    institutionId
+    institutionName
+  }
+}
+query Drivers {
+  drivers {
+    ...driverPart
+  }
+}
+
+query DriversOfStudent($parentStudentId: ObjectId!) {
+  driversOfStudent(parentStudentId: $parentStudentId) {
+    ...driverPart
+  }
+}
+query DriversWithApp($parentStudentId: ObjectId!) {
+  drivers {
+    _id
+    firstName
+    lastName
+    fullName
+    createdAt
+    citizenshipId
+    address {
+      ...address
+    }
+    driver {
+      _id
+      institutions {
+        ...driverInstitution
+      }
+      requestApp(parentStudentId: $parentStudentId) {
+        ...driverStudentApplication
+      }
+    }
+  }
+}
+mutation DismissDriver($driverId: ObjectId!) {
+  dismissDriver(driverId: $driverId) {
+    ...removeResult
+  }
+}

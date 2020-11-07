@@ -1,0 +1,35 @@
+fragment message on Message {
+  _id
+  message
+  inboxId
+  ownerId
+  idOfUnReaders
+  sent
+  owner {
+    _id
+    firstName
+    lastName
+    fullName
+    kind
+  }
+}
+query Messages($inboxId: ObjectId!, $skip: Int!) {
+  messages(inboxId: $inboxId, skip: $skip) {
+    ...message
+  }
+}
+mutation SendMessage($message: String!, $to: [ObjectId!]!) {
+  sendMessage(message: { message: $message, to: $to }) {
+    ...message
+  }
+}
+mutation MessageRead($messageId: ObjectId!) {
+  messageRead(messageId: $messageId) {
+    success
+  }
+}
+subscription InboxNotification {
+  inboxNotification {
+    ...message
+  }
+}

@@ -1,0 +1,19 @@
+fragment weeklyHour on WeeklyHour {
+  _id
+  name
+  hour {
+    ...hour
+  }
+}
+mutation CreateHours(
+  $_id: ObjectId
+  $schoolId: ObjectId!
+  $name: String!
+  $hour: [HourInput!]!
+) {
+  createHour(
+    data: { _id: $_id, schoolId: $schoolId, name: $name, hour: $hour }
+  ) {
+    ...weeklyHour
+  }
+}

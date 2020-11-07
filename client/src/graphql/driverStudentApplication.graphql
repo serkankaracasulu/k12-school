@@ -1,0 +1,51 @@
+fragment driverStudentApplication on DriverStudentApplication {
+  _id
+  createdAt
+  parentId
+  status
+  institutionId
+  email
+  userFullName
+  userId
+  institutionName
+  studentFullName
+  studentId
+  address {
+    ...address
+  }
+}
+
+query driverServiceRequests {
+  driverServiceRequests {
+    ...driverStudentApplication
+  }
+}
+mutation CancelServiceRequestDriver($requestId: ObjectId!) {
+  cancelServiceRequestDriver(requestId: $requestId) {
+    ...removeResult
+  }
+}
+mutation AcceptDriverServiceInvitation($invitationId: ObjectId!) {
+  acceptDriverServiceInvitation(invitationId: $invitationId) {
+    success
+  }
+}
+mutation CancelServiceRequestUser(
+  $requestId: ObjectId!
+  $parentStudentId: ObjectId!
+) {
+  cancelServiceRequestUser(
+    requestId: $requestId
+    parentStudentId: $parentStudentId
+  ) {
+    ...removeResult
+  }
+}
+mutation SendInvitationDriver(
+  $parentStudentId: ObjectId!
+  $driverId: ObjectId!
+) {
+  sendInvitationDriver(parentStudentId: $parentStudentId, driverId: $driverId) {
+    ...driverStudentApplication
+  }
+}

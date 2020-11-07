@@ -1,0 +1,9 @@
+fragment classLesson on ClassLesson {
+  _id
+  lessonId
+  lesson {
+    ...lessonG
+  }
+  count
+  required
+}

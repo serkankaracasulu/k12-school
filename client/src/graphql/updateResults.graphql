@@ -1,0 +1,5 @@
+fragment updateResults on UpdateResults {
+  code
+  success
+  _ids
+}

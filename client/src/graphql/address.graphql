@@ -1,0 +1,22 @@
+fragment address on Address {
+  _id
+  title
+  description
+  location {
+    coordinates
+  }
+}
+mutation UpdateStudentAddress(
+  $title: String!
+  $description: String!
+  $lat: Float!
+  $lng: Float!
+  $i: ObjectId!
+) {
+  updateStudentAddress(
+    data: { title: $title, description: $description, lat: $lat, lng: $lng }
+    i: $i
+  ) {
+    ...address
+  }
+}

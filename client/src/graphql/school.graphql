@@ -1,0 +1,129 @@
+fragment school on School {
+  _id
+  eOkulCode
+  name
+  schoolKindId
+  schoolKindName
+  headMaster {
+    _id
+  }
+  weeklyHour {
+    ...weeklyHour
+  }
+  educationYears {
+    ...educationYear
+  }
+  classes {
+    ...classType
+  }
+  schoolKindId
+  schoolKindName
+  studentCount
+  address {
+    coordinates
+  }
+}
+query Schools($institutionId: ObjectId) {
+  schools(institutionId: $institutionId) {
+    ...school
+  }
+}
+mutation CreateSchool(
+  $_id: ObjectId
+  $name: String!
+  $eOkulCode: String
+  $schoolKindId: ObjectId
+) {
+  createSchool(
+    data: {
+      _id: $_id
+      name: $name
+      eOkulCode: $eOkulCode
+      schoolKindId: $schoolKindId
+    }
+  ) {
+    ...school
+  }
+}
+query School($id: ObjectId!) {
+  school(id: $id) {
+    ...school
+  }
+}
+query SchoolsClassesName($institutionId: ObjectId) {
+  schools(institutionId: $institutionId) {
+    _id
+    name
+    classes {
+      _id
+      level
+      code
+      code1
+      name
+    }
+  }
+}
+query SchoolsTeachers {
+  schools {
+    _id
+    classes {
+      _id
+      classroomTeacher {
+        _id
+        firstName
+        lastName
+        fullName
+      }
+    }
+  }
+}
+query SchoolsClassesSchoolKind {
+  schools {
+    _id
+    name
+    schoolKindId
+    schoolKindName
+    classes {
+      _id
+      name
+      level
+      code
+      code1
+    }
+  }
+}
+query MyLessons(
+  $week: Int
+  $classes: [ObjectId!]
+  $notMine: Boolean
+  $teacherId: ObjectId
+) {
+  schools {
+    _id
+    name
+    educationYears {
+      ...educationYear
+    }
+    weeklyHour {
+      ...weeklyHour
+    }
+    classes {
+      _id
+      code
+      name
+      level
+      code1
+      fullName
+      lessons(
+        query: {
+          week: $week
+          classes: $classes
+          notMine: $notMine
+          teacherId: $teacherId
+        }
+      ) {
+        ...lesson
+      }
+    }
+  }
+}

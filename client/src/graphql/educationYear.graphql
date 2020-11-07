@@ -1,0 +1,23 @@
+fragment educationYear on EducationYear {
+  _id
+  name
+  terms {
+    ...term
+  }
+}
+mutation EditEducationYear(
+  $schoolId: ObjectId!
+  $name: String!
+  $terms: [TermInput!]!
+) {
+  editEducationYear(
+    educationYear: { schoolId: $schoolId, name: $name, terms: $terms }
+  ) {
+    ...educationYear
+  }
+}
+mutation DeleteEducationYear($schoolId: ObjectId!, $id: ObjectId!) {
+  deleteEducationYear(schoolId: $schoolId, id: $id) {
+    ...removeResult
+  }
+}

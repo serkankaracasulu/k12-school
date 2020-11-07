@@ -1,0 +1,5 @@
+mutation addAddressToSchool($schoolId: ObjectId!, $lat: Float!, $lng: Float!) {
+  addAddressToSchool(data: { schoolId: $schoolId, lat: $lat, lng: $lng }) {
+    coordinates
+  }
+}

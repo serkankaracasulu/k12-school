@@ -1,0 +1,36 @@
+fragment teacherApplication on TeacherApplication {
+  _id
+  email
+  institutionId
+  institutionName
+  userId
+  userFullName
+  status
+  createdAt
+}
+query JobRequest {
+  jobRequests {
+    ...teacherApplication
+  }
+}
+query TeacherApplications {
+  teacherApplications {
+    ...teacherApplication
+  }
+}
+
+mutation InvitationTeachers($emails: [String!]!) {
+  invitationTeachers(emails: $emails) {
+    ...teacherApplication
+  }
+}
+mutation DeleteInvitation($applicationId: ObjectId!) {
+  deleteInvitation(applicationId: $applicationId) {
+    _id
+  }
+}
+mutation ReSendInvitation($applicationId: ObjectId!) {
+  reSendInvitation(applicationId: $applicationId) {
+    success
+  }
+}

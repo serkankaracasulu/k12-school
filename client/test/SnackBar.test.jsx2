@@ -1,0 +1,40 @@
+import React from "react";
+import "regenerator-runtime/runtime";
+import {
+  render,
+  fireEvent,
+  waitForElement,
+  waitForElementToBeRemoved
+} from "@testing-library/react";
+import { renderHook } from "@testing-library/react-hooks";
+import hook from "./hookTrueFalse";
+import SnackBar from "./../src/components/SnackBar";
+const wait = require("waait");
+import { act } from "react-dom/test-utils";
+describe("SnackBar", function() {
+  it("renders correctly", function() {
+    const { result } = renderHook(() => hook(true));
+    const { getByRole } = render(
+      <SnackBar
+        open={result.current.open}
+        setOpen={result.current.setValue}
+        variant="info"
+        message="loerm ipsum"
+      />
+    );
+    expect(getByRole("alertdialog")).toBeDefined();
+  });
+  it("should close when click close", async function() {
+    const { result } = renderHook(() => hook(true));
+    const { getByLabelText, getByText, getByRole } = render(
+      <SnackBar
+        open={result.current.open}
+        setOpen={result.current.setValue}
+        variant="info"
+        message="loerm ipsum"
+      />
+    );
+    // fireEvent.click(getByLabelText("close"));
+    expect(getByRole("alertdialog")).toBeDefined();
+  });
+});

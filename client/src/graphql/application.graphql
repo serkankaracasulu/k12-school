@@ -1,0 +1,22 @@
+fragment application on Application {
+  _id
+  status
+  institutionId
+  institutionName
+  userId
+  userFullName
+  createdAt
+  email
+}
+
+mutation AcceptInvitation($invitationId: ObjectId!, $r: Boolean, $d: Boolean) {
+  acceptInvitation(invitationId: $invitationId, r: $r, d: $d) {
+    ...application
+  }
+}
+
+subscription ApplicatonUpdated {
+  applicationUpdated {
+    ...application
+  }
+}
