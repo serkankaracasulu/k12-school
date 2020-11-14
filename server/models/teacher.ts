@@ -14,7 +14,7 @@ export class Teacher {
   @Field()
   allSchool: boolean;
 
-  @Field(() => ID)
+  @Field(() => [ID])
   schoolIds: ObjectId[];
 
   @Field(() => ID, { nullable: true })

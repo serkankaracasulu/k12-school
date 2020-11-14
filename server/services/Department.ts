@@ -1,6 +1,6 @@
 import { Service } from "typedi";
 import { DepartmentModel } from "../models/department";
-import { Department } from "./../models/department";
+import { Department } from "../models/department";
 import { ObjectId } from "mongodb";
 
 @Service()

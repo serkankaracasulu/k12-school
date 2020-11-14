@@ -148,12 +148,17 @@ export class TeacherApplicationResolver {
     const { activeUser } = ctx;
     if (!activeUser || !activeUser.teacher?.institutionId)
       throw new AuthenticationError("");
-    const teacherApplication = await this.teacherApplicationService.getById(
+    const application = await this.teacherApplicationService.getById(
       new ObjectId(activeUser.teacher.institutionId),
       applicationId
     );
-    if (teacherApplication) {
-      await teacherApplication.sendInvatation();
+    if (application) {
+      try {
+        await application.sendInvatation();
+      } catch (error) {
+        console.log(error);
+        return { success: false };
+      }
       return { success: true };
     }
     throw new ApolloError("Application didn't find");

@@ -22,7 +22,7 @@ import { CContext } from "../types";
 import { TeacherFieldService } from "./../services/teacherField";
 import { Container } from "typedi";
 import { Department, IDepartment } from "./../models/department";
-import { DepartmentService } from "./../services/department";
+import { DepartmentService } from "../services/department";
 import { Role } from "../models/person";
 import { ObjectId } from "mongodb";
 

@@ -16,7 +16,7 @@ export class DriverInstitution {
 
   studentIds: Types.ObjectId[];
 }
-interface IDriverInstitution extends DriverInstitution, Document {
+export interface IDriverInstitution extends DriverInstitution, Document {
   _id: ObjectId;
 }
 

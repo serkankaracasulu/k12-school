@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { logger } from "./logging";
 
 export default function() {
+  console.log("2",process.env.DB_URI)
   mongoose
     .connect(process.env.DB_URI || "mongodb://localhost/k12-school", {
       useNewUrlParser: true,

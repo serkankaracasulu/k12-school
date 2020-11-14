@@ -13,7 +13,12 @@ import { Context, AuthenticationError, ApolloError } from "apollo-server-core";
 import { CContext } from "../types";
 import Container from "typedi";
 import { DriverService } from "../services/driver";
-import { Driver, IDriver, DriverInstitution } from "../models/driver";
+import {
+  Driver,
+  IDriver,
+  DriverInstitution,
+  IDriverInstitution,
+} from "../models/driver";
 import { RemoveResult, ObjectIdScalar } from "./types";
 import { Types } from "mongoose";
 import { Role } from "./../models/person";
@@ -27,15 +32,16 @@ import { IUser } from "./../models/user";
 @Resolver(() => DriverInstitution)
 export class DriverInstitutionFieldResolver
   implements ResolverInterface<DriverInstitution> {
-  constructor(private readonly institutionService: InstitutionService) {
-    this.institutionService = Container.get(InstitutionService);
+  readonly #institutionService: InstitutionService;
+  constructor() {
+    this.#institutionService = Container.get(InstitutionService);
   }
-  @FieldResolver(() => DriverStudentApplication)
+  @FieldResolver(() => String)
   async institutionName(
-    @Root() di: DriverInstitution,
+    @Root() di: DriverInstitution | IDriverInstitution,
     @Ctx() ctx: Context<CContext>
-  ) {
-    const inst = await this.institutionService.getById(di.institutionId);
+  ): Promise<string> {
+    const inst = await this.#institutionService.getById(di.institutionId);
     if (inst) return inst.name;
     return "";
   }
@@ -126,6 +132,7 @@ export class DriverResolver {
     if (!driver) throw new ApolloError("Driver didin't find");
     const insts = (driver as IUser).driver?.institutions;
     if (!insts) throw new Error("Failed");
-    return insts.toObject();
+    console.log(insts);
+    return insts;
   }
 }

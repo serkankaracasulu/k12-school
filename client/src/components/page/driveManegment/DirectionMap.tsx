@@ -1,8 +1,7 @@
-import { useCurrentPosition } from "google-map-hooks";
 import { DateTime } from "luxon";
 import * as React from "react";
 
-import { FormControlLabel, Switch, Typography } from "@material-ui/core";
+import { FormControlLabel, Switch } from "@material-ui/core";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import {
   DirectionsRenderer,
@@ -49,6 +48,7 @@ export default function DirectionMap({
     onSubscriptionData: (tData) => {
       if (tData.subscriptionData.data) {
         const { positionNotification } = tData.subscriptionData.data;
+        console.log("positionNotification", positionNotification);
         setCurrentSubPosition(
           new window.google.maps.LatLng(
             positionNotification.coords.point.coordinates[0],
@@ -67,7 +67,6 @@ export default function DirectionMap({
     .plus({ day: voyageTime.day })
     .plus({ hours: +startHour, minutes: +starMinute });
 
-  const { myLocation, loading, error } = useCurrentPosition();
   const [openStudentInfo, setOpenStudentInfo] = React.useState("");
   const [waypoints, setWaypoints] = React.useState<google.maps.LatLng[]>([]);
   const [lastStudentCord, setlastStudentCord] = React.useState<
@@ -99,8 +98,7 @@ export default function DirectionMap({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [window.google]);
   if (loadError) return <ErrorPage />;
-  if (error) return <Typography>Lütfen konum takibini açınız.</Typography>;
-  if (isLoaded && !loading && myLocation)
+  if (isLoaded)
     return (
       <GoogleMap
         id="direction-map"

@@ -235,7 +235,7 @@ export class VoyageResolver {
       }
     );
     if (voyagePosition) {
-      publish(voyagePosition);
+      publish(voyagePosition.toObject());
       return voyagePosition;
     }
     throw new ApolloError("Error");

@@ -1,34 +1,39 @@
-import "reflect-metadata";
-import http from "http";
-import { logger, logging } from "./startup/logging";
-import { resolvers } from "./graphql/";
-import path from "path";
-import dotenv from "dotenv";
-import { ApolloServer } from "apollo-server-express";
-import { RedisPubSub } from "graphql-redis-subscriptions";
-import express from "express";
+import dotenv from 'dotenv';
+import 'reflect-metadata';
 
-import db from "./startup/db";
-import auth from "./middleware/auth";
-import homework from "./controllers/homework";
-import * as userProfile from "./controllers/userProfile";
-import * as studentProfile from "./controllers/studentProfile";
-import { buildSchema } from "type-graphql";
-import { authChecker } from "./helper/auth-cheker";
-import dataLoaders from "./dataLoaders";
-import { CContext } from "./types";
-import tokenVerify from "./helper/tokenVerify";
+import { ApolloServer, PubSub } from 'apollo-server-express';
+import express from 'express';
+import { RedisPubSub } from 'graphql-redis-subscriptions';
+import http from 'http';
+import path from 'path';
+import { buildSchema } from 'type-graphql';
 
+import homework from './controllers/homework';
+import * as studentProfile from './controllers/studentProfile';
+import * as userProfile from './controllers/userProfile';
+import dataLoaders from './dataLoaders';
+import { resolvers } from './graphql/';
+import { authChecker } from './helper/auth-cheker';
+import tokenVerify from './helper/tokenVerify';
+import auth from './middleware/auth';
+import db from './startup/db';
+import { logger, logging } from './startup/logging';
+import { CContext } from './types';
+
+console.log("1",process.env.DB_URI)
 dotenv.config();
 logging();
 db();
 (async () => {
+  /*
   const pubSub = new RedisPubSub({
     connection: {
       host: "localhost",
       port: 6379,
     },
   });
+  */
+  const pubsub = new PubSub();
   logger.info({
     message: "---------------Starting...-------------------------",
   });
@@ -44,7 +49,7 @@ db();
       resolvers: resolvers,
       dateScalarMode: "isoDate",
       authChecker,
-      pubSub,
+      pubSub:pubsub,
     }),
     engine: true,
     context: ({ req, connection }) => {

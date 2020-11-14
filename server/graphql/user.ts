@@ -1,57 +1,33 @@
+import { ForbiddenError } from 'apollo-server';
+import { ApolloError, AuthenticationError, Context, UserInputError } from 'apollo-server-core';
+import { IsDate, IsEmail, IsPhoneNumber, Length, Max, Min } from 'class-validator';
+import jwt from 'jsonwebtoken';
+import { ObjectId } from 'mongodb';
 import {
-  Resolver,
-  Mutation,
-  Ctx,
-  Arg,
-  InputType,
-  Field,
-  Int,
-  Query,
-  Root,
-  FieldResolver,
-  ResolverInterface,
-  Authorized,
-  UnauthorizedError,
-} from "type-graphql";
-import { Container } from "typedi";
-import { logger } from "../startup/logging";
-import jwt from "jsonwebtoken";
-import { User } from "../models/user";
-import {
-  Context,
-  ApolloError,
-  UserInputError,
-  AuthenticationError,
-} from "apollo-server-core";
-import { LoginToken, Result, AddressInput, ObjectIdScalar } from "./types";
-import { Department } from "./../models/department";
-import { University } from "../models/university";
-import { CContext, IActiveUser } from "../types";
-import {
-  IsEmail,
-  Length,
-  IsPhoneNumber,
-  Min,
-  Max,
-  IsDate,
-} from "class-validator";
-import { Person, IPerson, Role, PersonKind } from "../models/person";
-import { UserService } from "../services/user";
-import { InstitutionService } from "./../services/institution";
-import { UnivercityService } from "../services/university";
-import { DepartmentService } from "../services/department";
-import { TokenService } from "./../services/token";
-import { UserBuilPath } from "./../helper/UserBuildPath";
-import { Education } from "../models/education";
-import { ApplicationService } from "./../services/application";
-import { DriverService } from "./../services/driver";
-import { PersonService } from "./../services/person";
-import { ObjectId } from "mongodb";
-import { IUser } from "./../models/user";
-import { ForbiddenError } from "apollo-server";
-import { IStudent } from "./../models/student";
-import { IDriver } from "./../models/driver";
-import { Address } from "../models/address";
+    Arg, Authorized, Ctx, Field, FieldResolver, InputType, Int, Mutation, Query, Resolver,
+    ResolverInterface, Root, UnauthorizedError
+} from 'type-graphql';
+import { Container } from 'typedi';
+
+import { UserBuilPath } from '../helper/UserBuildPath';
+import { Address } from '../models/address';
+import { Department } from '../models/department';
+import { IDriver } from '../models/driver';
+import { Education } from '../models/education';
+import { IPerson, Person, PersonKind, Role } from '../models/person';
+import { IStudent } from '../models/student';
+import { University } from '../models/university';
+import { IUser, User } from '../models/user';
+import { ApplicationService } from '../services/application';
+import { DepartmentService } from '../services/department';
+import { InstitutionService } from '../services/institution';
+import { PersonService } from '../services/person';
+import { TokenService } from '../services/token';
+import { UnivercityService } from '../services/university';
+import { UserService } from '../services/user';
+import { logger } from '../startup/logging';
+import { CContext, IActiveUser } from '../types';
+import { AddressInput, LoginToken, ObjectIdScalar, Result } from './types';
 
 @InputType()
 class ReSendConfirmEmailInput implements Partial<User> {

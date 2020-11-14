@@ -73,14 +73,12 @@ export default function VoyageTimePage({ institutionId, school }: PropsType) {
               lng: school?.address?.coordinates[1] || 0,
             }}
           />
+          <WatchPositionIconButton
+            className={classes.fab}
+            voyageId={voyageId}
+            time={data.voyageTime}
+          />
         </>
-      )}
-      {data && (
-        <WatchPositionIconButton
-          className={classes.fab}
-          voyageId={voyageId}
-          time={data.voyageTime}
-        />
       )}
     </div>
   );

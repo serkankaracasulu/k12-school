@@ -16,7 +16,7 @@ import { Department } from "./../models/department";
 import { CContext } from "../types";
 import { AuthenticationError } from "apollo-server-core";
 import { Length } from "class-validator";
-import { DepartmentService } from "./../services/department";
+import { DepartmentService } from "../services/department";
 import { Container } from "typedi";
 import { TeacherFieldService } from "./../services/teacherField";
 import { Role } from "../models/person";

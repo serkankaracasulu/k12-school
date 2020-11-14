@@ -1,7 +1,7 @@
 import { Kind } from "graphql/language/kinds";
 import { GraphQLScalarType } from "graphql/type/definition";
 import { ObjectId, Decimal128 } from "mongodb";
-import { Document, model, Schema } from "mongoose";
+import { Document, model, Schema, Types } from "mongoose";
 import { Field, ID, Int, ObjectType } from "type-graphql";
 
 import { Voyage, VoyageTime } from "./voyage";
@@ -131,6 +131,7 @@ const PositionTypeSchema = new Schema<IPositionType>({
 });
 
 export interface IVoyagePosition extends VoyagePosition, Document {
+  positions: Types.DocumentArray<IPositionType>;
   _id: ObjectId;
 }
 export const VoyagePositionSchema = new Schema<IVoyagePosition>({

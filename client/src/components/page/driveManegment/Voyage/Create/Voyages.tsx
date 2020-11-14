@@ -58,7 +58,6 @@ export default function VoyageCreateItems({ times, set }: PropsType) {
       return 0;
     });
     const newIndex = orderTimeList.indexOf(time);
-    console.log(oldIndex, newIndex);
     if (oldIndex !== newIndex) setChangedId(oldTime.id);
     else if (changedId) setChangedId("");
     setTimeList(new Set(orderTimeList));

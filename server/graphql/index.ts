@@ -33,7 +33,11 @@ import {
 } from "./study";
 import { InboxResolver, MessageFieldResolver } from "./inbox";
 import { DriverApplicationResolver } from "./driverApplication";
-import { DriverResolver, DriverFieldResolver } from "./driver";
+import {
+  DriverResolver,
+  DriverFieldResolver,
+  DriverInstitutionFieldResolver,
+} from "./driver";
 import {
   DriverStudentApplicationResolver,
   DriverStudentApplicationFieldResolver,
@@ -85,6 +89,7 @@ export const resolvers: NonEmptyArray<Function> | NonEmptyArray<string> = [
   DriverStudentApplicationResolver,
   DriverStudentApplicationFieldResolver,
   DriverFieldResolver,
+  DriverInstitutionFieldResolver,
   VoyageFieldResolver,
   VoyageResolver,
   VoyageTimeResolver,

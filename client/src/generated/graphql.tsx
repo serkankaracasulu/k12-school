@@ -417,7 +417,7 @@ export type Teacher = {
   _id: Scalars['ID'];
   institutionId: Scalars['ID'];
   allSchool: Scalars['Boolean'];
-  schoolIds: Scalars['ID'];
+  schoolIds: Array<Scalars['ID']>;
   addedById?: Maybe<Scalars['ID']>;
 };
 
